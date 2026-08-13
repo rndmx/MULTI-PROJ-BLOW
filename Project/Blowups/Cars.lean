@@ -107,10 +107,3 @@ lemma open_of_blowup_IsCars (A : CommRingCat) (L : ι → Ideal A)
   exact h
 
 #exit
-lemma base_change_Bl_open [Fintype ι] (A B : CommRingCat) [Algebra A B]
-  [IsOpenImmersion (Spec B ↘ Spec A)] (L: ι → Ideal A) :
-  ∃! (e : pullback (BlMu L ↘ Spec A) (Spec B ↘ Spec A) ≅
-    BlMu (L := fun i : ι => Ideal.map (algebraMap A B) (L i))),
-  Scheme.Hom.IsOver e.hom (Spec B) := by
-
-  sorry

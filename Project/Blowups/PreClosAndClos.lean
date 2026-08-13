@@ -576,9 +576,3 @@ lemma pullback_assoc (X'' X' : Scheme) (f': X'' ⟶  X') (f: X' ⟶  X) (Z: Clos
     pullback_Clos (f' ≫ f) Z = pullback_Clos f' (pullback_Clos f Z) := by
   induction Z using Quotient.inductionOn with | h Z =>
   exact Quotient.sound (pullback_Pre_assoc X'' X' f' f Z)
-
-#exit
-
-lemma pullback_assoc  (X'' : Scheme) (X' : Scheme) (f': X'' ⟶  X') (f: X' ⟶  X) (Z: Clos X):
-  pullback_Clos (X'') (f ∘ f') Z = pullback_Clos (X'') ( f') (pullback_Clos (X') (f ) (Z)):=
-  by pullback_Pre_assoc sorry

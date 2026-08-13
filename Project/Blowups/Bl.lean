@@ -762,13 +762,6 @@ def BlMuToBl : BlMu L ⟶ Bl L :=
       exact ((glueData (τ := GoodPotionIngredient (ReesAlgebra.intGrading L)) id).glue_condition
         (map_index L P) (map_index L P')).symm)
 
-lemma inter_Po (P P' : Mu L) :
-    ((glueData (τ := Mu L) (map_index L)).ι P).opensRange ⊓
-    ((glueData (τ := Mu L) (map_index L)).ι P').opensRange =
-    ((glueData (τ := Mu L) (map_index L)).ι (union_Mu L P P')).opensRange := by
-
-  sorry
-
 def dilToDilUnion (P P': Mu L) : A[P.multicenter] →ₐ[A] A[(union_Mu L P P').multicenter] :=
   dilationToUnion_left L P P'
 
