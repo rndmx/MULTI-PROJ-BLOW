@@ -196,22 +196,20 @@ algebras into a global blowup of schemes, a limitation the authors note
 explicitly. The present work builds on that formalisation without
 modification, using it as a black box for everything concerning potions,
 relevant homogeneous submonoids, and the gluing of $\Proj$ from good potion
-ingredients, and adds the global multicentered blowup and its universal
-property on top. Mathlib itself contains no theory of blowups, single- or
-multicentered, so this addition is built entirely from these primitives and
-from the scheme-theoretic foundations already in mathlib.
+ingredients, and develops the global multicentered blowup and establishes its universal
+property. Mathlib itself contains no theory of blowups, single- or
+multicentered, and the multicentered blowup is constructed entirely from these primitives and scheme-theoretic foundations in mathlib.
 
-The construction below uses both the multi-graded $\Proj$ and the dilatations,
-in the same way as \cite{mayeux-dilatations-v4}: the dilatations are the affine
-charts, and the multi-graded $\Proj$ of the multi-Rees algebra is what glues
-them. In the affine case the argument is the one given there, where the charts
-$D_+(f)$ of $\Bl_Z X$ are identified with the dilatations
-$A[L_1/f, \dots, L_k/f]$ and the universal property is deduced from the
-corresponding property of dilatations. Sections \ref{sec:dilatation} and
-\ref{ssec:cars} to \ref{ssec:aff-exist} are that argument, written out in the
+The construction synthesizes the multi-graded $\Proj$ and dilatations as complementary
+components: dilatations define the affine charts, and the multi-graded $\Proj$
+provides the gluing machinery. The affine case identifies the charts
+$D_+(f)$ of $\Bl_Z X$ with dilatations $A[L_1/f, \dots, L_k/f]$, then
+lifts the local universal property of dilatations to the global setting via the
+$\Proj$ construction. Sections \ref{sec:dilatation} and
+\ref{ssec:cars} to \ref{ssec:aff-exist} develop this argument in the
 form the formalisation uses.
 
-What the present account adds is the globalisation and its verification. The
+The present account provides the globalisation of the universal property and its complete proof. The
 proof of Theorem \ref{thm:main} is organised so that every step beyond the
 affine case, namely the base change along open immersions, the comparison
 isomorphisms on overlaps, the triple overlap maps, the cocycle identity, and
@@ -300,23 +298,21 @@ subschemes $Z_i$ are given as part of that data rather than recovered from it.
 
 \subsection{Strategy of the proof}\label{sec:strategy}
 
-The overall method used below is the classical one, and very old: covering,
-working on charts, and gluing. What is new is the level of detail at which each
-step is carried out, and the systematic use of one single tool: the universal
-property of the multicentered dilatation of a ring, to carry out every global
-step after the reduction to the local affine case.
+While the overall strategy of covering, working on charts, and gluing is classical,
+the present proof achieves novelty through its systematic organization around a single
+tool: the universal property of the multicentered dilatation, which governs every
+global step after the reduction to the local affine case.
 
 The proof does not follow \cite{mayeux-riche} closely. The argument there uses
 multicentered global dilatations of schemes and rests on a body of supporting
 theory: multi-graded $\Proj$ and its charts, quasi-coherent sheaves, closed
 subschemes, Cartier divisors and their behaviour under base change. Most of that
 is not available in mathlib, as recorded in Section \ref{sec:relation}. The
-present proof works at the ring level only, using multicentered dilatations of
-rings from \cite{mayeux-dilatations}, and constructs the global blowup by hand
+present proof operates at the ring level, avoiding the need for global scheme-theoretic infrastructure, and constructs the global blowup by
 via covers, charts, gluing data, and uniqueness arguments. Following
 \cite{mayeux-riche} literally would have meant developing both the global
 dilatations of schemes and all of their supporting theory. The approach taken
-here keeps to a minimum what has to be built from scratch. The multigraded
+here achieves efficiency by building only what is essential for the proof. The multigraded
 $\Proj$ construction of Brenner and Schröer \cite{brenner-schroer} is used to
 define the blowup by gluing dilatation charts. The universal property of the
 multicentered dilatation of a ring is then used to prove the universal property
@@ -564,8 +560,8 @@ lemma PreProjBlowup_UnivProp
     ∃! φ : T ⟶ BlGlob Z, Scheme.Hom.IsOver φ X := by
 \end{lstlisting}
 
-The construction depends on the presentation only up to canonical isomorphism,
-so it descends. Given a centre $\cZ \in \Clos(X)$, choose a presentation
+The construction is presentation-independent: it depends on the presentation up to canonical isomorphism,
+so it descends to Given a centre $\cZ \in \Clos(X)$, choose a presentation
 $Z$ of it and set $\Bl_\cZ X := \Bl_Z X$.
 
 \begin{theorem}[Universal property]\label{thm:main}
@@ -701,7 +697,7 @@ def LargeIdeal (i : F.index) : Ideal A := F.ideal i + Ideal.span {F.elem i}
 
 The pairing of an ideal with a distinguished element is the essential point. We
 are going to build a ring in which $\cL_j$ becomes generated by $a_j$. Writing
-$\cL_j = I_j + (a_j)$ rather than just taking an ideal and a chosen generator
+$\cL_j = I_j + (a_j)$ rather than taking an ideal with a separate chosen generator
 allows $a_j$ to be an arbitrary element of $\cL_j$, with $I_j$ absorbing the
 rest, and this is what lets a single construction cover all the charts.
 
@@ -1073,12 +1069,12 @@ structure morphism to $\Spec A$ is induced by the isomorphism
 $A \cong \Rees(L)_0$ recorded as \texttt{degreeZeroIso'}.
 
 Two remarks. First, the gluing data is inherited from the ambient multigraded
-$\Proj$, so there is nothing to check: the overlaps and the cocycle condition
-come for free from the $\Proj$ construction. Second, we do not need to know
+$\Proj$, so the overlaps and the cocycle condition are inherited from the
+$\Proj$ construction, requiring no additional verification. Second, we do not need to know
 that $\BlM(L)$ is all of $\Proj \Rees(L)$. It is the union of the dilatation
-charts, and every statement we prove refers only to those charts. This is a
-deliberate choice and it removes a comparison that would otherwise have to be
-proved.
+charts, and every statement we prove is scoped to those charts, reflecting a
+deliberate architectural choice that avoids the need for a comparison that would
+otherwise complicate the proof.
 
 To summarise the picture:
 \[
@@ -1192,7 +1188,7 @@ through a single dilatation and Theorem \ref{thm:dil-univ} applies. This is the
 point of the auxiliary opens appearing in the proof below, which intersect the
 preimages of two chart ranges with a chart of the covering supplied by the
 Cartier hypothesis. Note that the hypothesis is stated at the \texttt{IsCars}
-level, so the covering it provides is not one we chose.
+level, and we strategically use the covering produced by the Cartier hypothesis.
 
 \leansrc{Project/Blowups/UniqueBlowup.lean}{254--261}
 \begin{lstlisting}
