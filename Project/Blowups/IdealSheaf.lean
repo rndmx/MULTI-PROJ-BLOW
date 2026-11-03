@@ -376,3 +376,20 @@ theorem exists_blowup_isEffectiveCartier_of_isClosedImmersion [Finite ι]
 end Scheme.IdealSheafData
 
 end AlgebraicGeometry
+
+namespace AlgebraicGeometry
+
+/-- A presented centre is equivalent to the presented centre of the kernels of its
+closed immersions. -/
+theorem _root_.PreClos.mk_eq_toClos_ker {X : Scheme.{u+1}} (W : PreClos X) :
+    (Quotient.mk'' W : Clos X) =
+      Scheme.IdealSheafData.toClos fun i ↦ (W.subscheme i ↘ X).ker := by
+  refine Quotient.sound ⟨?_⟩
+  exact
+    { indnumb_equiv := Equiv.refl _
+      subscheme_iso i := haveI := W.isClosedImmersion i; asIso (W.subscheme i ↘ X).toImage
+      subscheme_iso_over i := by
+        rw [Scheme.Hom.isOver_iff]
+        exact (W.subscheme i ↘ X).toImage_imageι }
+
+end AlgebraicGeometry

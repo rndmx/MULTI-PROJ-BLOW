@@ -136,18 +136,9 @@ The supporting machinery had to be developed. The formalization of the multigrad
 a non-trivial theorem in algebraic geometry, with no noetherian, properness, or finite
 type assumptions on $X$, and all dependences on the ideals explicit.
 
-\paragraph{Formal artifact.} The Lean code accompanying this paper is
-publicly available at \url{https://github.com/rndmx/MULTI-PROJ-BLOW} \cite{blowups-code}, version
-\texttt{v2.0}. It builds with Lean \texttt{v4.22.0-rc3} and mathlib at commit
-\texttt{7b332d3}; running \texttt{lake exe cache get} followed by
-\texttt{lake build} checks all proofs. Every code excerpt in this paper is
-preceded by its file and line numbers in that version.
-The repository includes portions of the code of \cite{mayeux-zhang}, updated to
-this version of mathlib, so that it builds on its own.
-
 This document is organised as follows. Section 1.1 situates the work relative to prior
 results and existing libraries. Section 1.2 outlines the proof strategy, emphasising the
-role of the dilatation universal property. Sections 2--4 contain the proof: the theorem
+role of the universal property of dilatations. Sections 2--4 contain the proof: the theorem
 statement, the dilatation and its properties, the reduction to the affine case, and
 the globalisation. Section 5 lists the correspondence between the statements
 of this paper and their Lean declarations.
@@ -191,7 +182,7 @@ following the algebraic treatment of \cite{mayeux-riche}. That paper formalizes 
 schemes and dilatations of rings in Lean 4, as local, ring-level
 constructions; it stops short of gluing dilatations of quasi-coherent
 algebras into a global blowup of schemes, a limitation the authors note
-explicitly. The present work builds on that formalisation without
+explicitly. The present work builds on that formalisation without mathematical
 modification, using it as a black box for everything concerning potions,
 relevant homogeneous submonoids, and the gluing of $\Proj$ from good potion
 ingredients, and develops the global multicentered blowup and establishes its universal
@@ -227,9 +218,9 @@ The formalisation is built on mathlib \cite{mathlib}, which supplies schemes,
 $\Spec$, fibre products, open and closed immersions, gluing data, homogeneous
 localisation and the theory of non-zero-divisors. The general scheme theory in mathlib, on which everything here depends, was developed by Buzzard et al.\ \cite{buzzard-schemes}. Building on this, Zhang \cite{zhang-proj} formalized the monograded Proj construction, providing the first non-affine scheme formalization in a theorem prover.
 
-Beyond this general infrastructure, mathlib contains no blowups, no dilatations, no multigraded $\Proj$, and no effective Cartier ideal sheaves.
-
-Mathlib defines closed immersions, quasi-coherent ideal sheaves
+Beyond this general infrastructure, mathlib does not yet contain blowups,
+dilatations, multigraded $\Proj$, or effective Cartier ideal sheaves. It
+defines closed immersions, quasi-coherent ideal sheaves
 (\texttt{IdealSheafData}), and the correspondence between them
 (\texttt{overEquivIdealSheafData}). We present a centre by ideals of the rings
 of an affine cover; Subsection \ref{ssec:mathlib} shows that this presentation
@@ -268,15 +259,14 @@ choice again.
 In the formalisation, a presented centre supplies the data of (3), with charts
 $\Spec R_j \to X$. It is proved that each $Z_i \to X$ is then a closed
 immersion, and that its kernel restricts on each chart to $I_j$
-(Subsection \ref{ssec:mathlib}). The implication (1)$\Rightarrow$(3) is not
-formalised.
+(Subsection \ref{ssec:mathlib}).
 
 \subsection{Strategy of the proof}\label{sec:strategy}
 
-While the overall strategy of covering, working on charts, and gluing is classical,
-the present proof achieves novelty through its systematic organization around a single
-tool: the universal property of the multicentered dilatation, which governs every
-global step after the reduction to the local affine case.
+Roughly, the proof covers $X$ by affine charts, treats each chart, and glues.
+On a chart, the main input is the universal property of the multicentered
+dilatation; the gluing relies mostly on the uniqueness part of the affine
+universal property.
 
 The proof does not follow \cite{mayeux-riche} closely, nor \cite{mayeux-dilatations-v4}. The argument there uses
 multicentered global dilatations of schemes and rests on a body of supporting
@@ -301,8 +291,7 @@ The shape of the argument is the following.
 the universal property of dilatations applies. Its hypothesis is the Cartier
 condition with prescribed generators: the images of the $a_j$ are
 non-zero-divisors and generate the images of the large ideals. So
-the required morphism into a chart is produced by Theorem \ref{thm:dil-univ},
-with no further argument.
+the required morphism into a chart is produced by Theorem \ref{thm:dil-univ}.
 
 \emph{Gluing, by uniqueness.} The local morphisms are then glued using the
 uniqueness part of the same universal property: two local solutions solve the
@@ -315,6 +304,15 @@ In each case two objects are shown to solve one problem, and are therefore
 canonically identified.
 
 Sections \ref{sec:dilatation} to \ref{sec:proof} carry this out.
+
+\paragraph{Formal artifact.} The Lean code accompanying this paper is
+publicly available at \url{https://github.com/rndmx/MULTI-PROJ-BLOW} \cite{blowups-code}, version
+\texttt{v2.1}. It builds with Lean \texttt{v4.22.0-rc3} and mathlib at commit
+\texttt{7b332d3}; running \texttt{lake exe cache get} followed by
+\texttt{lake build} checks all proofs. Every code excerpt in this paper is
+preceded by its file and line numbers in that version.
+The repository includes portions of the code of \cite{mayeux-zhang}, updated to
+this version of mathlib, so that it builds on its own.
 
 \section{The theorem}
 
@@ -451,8 +449,8 @@ def pullback_Clos {X' : Scheme} (f : X' ⟶ X) : Clos X → Clos X' :=
 \subsection{Cartier centres}
 
 The following condition is stated on the charts of a presentation. For a centre
-given by a family of ideal sheaves, it is equivalent to each ideal sheaf being
-effective Cartier (Subsection \ref{ssec:mathlib}).
+given by a finite family of ideal sheaves, it is equivalent to each ideal sheaf
+being effective Cartier (Proposition \ref{prop:cartier-mathlib}).
 
 \begin{definition}\label{def:cartier}
 A presented centre $Z$ is \emph{Cartier} if for every $i \in \iota$ and every
@@ -592,9 +590,34 @@ For $\iota$ a singleton, this is \cite[Tag 0806]{stacks-project}.
 
 \subsection{Formulation with mathlib ideal sheaves}\label{ssec:mathlib}
 
-An ideal sheaf $\cI$ on $X$ is \emph{effective Cartier} if every point of $X$
-has an affine open neighbourhood $U$ such that $\cI(U)$ is generated by a
-non-zero-divisor of $\sO_X(U)$.
+For an ideal sheaf $\cI$ on $X$, mathlib provides a closed subscheme
+$V(\cI) \to X$ (\texttt{IdealSheafData.subscheme}); closed immersions into $X$
+correspond to ideal sheaves on $X$ (\texttt{overEquivIdealSheafData}). For
+$f : T \to X$, we write $f^{-1}\cI$ for the ideal sheaf of
+$T \times_X V(\cI) \to T$ (\texttt{IdealSheafData.comap}).
+
+\emph{From ideal sheaves to centres.} Let $(\cI_i)_{i \in \iota}$ be a family of
+ideal sheaves on $X$. It defines a presented centre (\texttt{toPreClos}): the
+schemes are the $V(\cI_i)$, the cover consists of the charts
+$\Spec \sO_X(U) \to X$ for all affine opens $U$, the ideals are the $\cI_i(U)$,
+and the isomorphisms of item (5) are \texttt{specQuotientIsoPullback}. We
+write $[\cI] \in \Clos(X)$ for its class (\texttt{toClos}).
+
+\emph{From centres to ideal sheaves.} Let $Z$ be a presented centre. Each
+$Z_i \to X$ is a closed immersion: this is local on the target, and over the
+chart $\Spec A_\gamma$ the base change $Z_i \times_X \Spec A_\gamma \to
+\Spec A_\gamma$ is identified with $\Spec(A_\gamma/I_{i\gamma}) \to \Spec
+A_\gamma$ (\texttt{PreClos.isClosedImmersion}). On $u_\gamma(U_\gamma)$, the
+kernel of $Z_i \to X$ corresponds to $I_{i\gamma}$ under
+$\sO_X(u_\gamma(U_\gamma)) \cong A_\gamma$ (\texttt{PreClos.ker\_ideal\_chart}).
+Moreover, $[Z] = [\ker(Z_i \to X)]_i$ in $\Clos(X)$
+(\texttt{PreClos.mk\_eq\_toClos\_ker}). A presented centre adds the choice of
+an affine cover, on which the Cartier condition of Definition \ref{def:cartier}
+is stated; $\Clos(X)$ forgets this choice.
+
+\emph{Cartier conditions.} An ideal sheaf $\cI$ on $X$ is \emph{effective
+Cartier} if every point of $X$ has an affine open neighbourhood $U$ such that
+$\cI(U)$ is generated by a non-zero-divisor of $\sO_X(U)$.
 
 \leansrc{Project/Blowups/IdealSheaf.lean}{203--209}
 \begin{lstlisting}
@@ -605,12 +628,31 @@ def IsEffectiveCartier (I : X.IdealSheafData) : Prop :=
   ∀ x : X, ∃ U : X.affineOpens, x ∈ U.1 ∧ I.IsPrincipalNZDOn U
 \end{lstlisting}
 
-A finite family $(\cI_i)_i$ of ideal sheaves on $X$ determines a centre in
-$\Clos(X)$, presented on the cover of $X$ by all its affine opens. Its pullback
-along $T \to X$ is Cartier if and only if each $\cI_i$ pulls back to an
-effective Cartier ideal sheaf on $T$ (\texttt{isCars\_pullback\_toClos\_iff}).
-This subsection is an interface: the construction of Section \ref{sec:proof}
-uses presented centres.
+\begin{proposition}\label{prop:cartier-mathlib}
+Let $(\cI_i)_{i \in \iota}$ be a finite family of ideal sheaves on $X$ and
+$f : T \to X$ a morphism. Then $f^*[\cI]$ is Cartier if and only if each
+$f^{-1}\cI_i$ is effective Cartier (\texttt{isCars\_pullback\_toClos\_iff}).
+\end{proposition}
+
+\begin{proof}
+Suppose each $f^{-1}\cI_i$ is effective Cartier. Generation by a
+non-zero-divisor passes to basic opens, and two affine neighbourhoods of a
+point contain a common basic open neighbourhood. Since $\iota$ is finite,
+induction on $\iota$ shows that every point of $T$ has an affine open
+neighbourhood on which all the $f^{-1}\cI_i$ are generated by non-zero-divisors
+(\texttt{exists\_isPrincipalNZDOn}). Let $S$ be the set of such affine opens.
+Presenting $(f^{-1}\cI_i)_i$ on the cover by $S$ gives a Cartier presented
+centre (\texttt{toPreClosOn}, \texttt{isPreCars\_of\_generators}). It is
+equivalent to $f^*[\cI]$, through the isomorphisms
+$V(f^{-1}\cI_i) \cong T \times_X V(\cI_i)$ over $T$.
+
+Conversely, let $W$ be a Cartier presented centre equivalent to $f^*[\cI]$, with
+bijection $\sigma$ of index sets. The kernel of $W_k \to T$ is
+$f^{-1}\cI_{\sigma(k)}$. For $x \in T$, take a chart of $W$ whose image
+contains $x$. By \texttt{PreClos.ker\_ideal\_chart}, the sections of
+$f^{-1}\cI_{\sigma(k)}$ on that image correspond to the ideal of $W$ on the
+chart, which is generated by a non-zero-divisor.
+\end{proof}
 
 \begin{corollary}\label{cor:mathlib}
 Let $(\cI_i)_{i \in \iota}$ be a finite family of ideal sheaves on $X$. There
@@ -627,8 +669,14 @@ theorem exists_blowup_isEffectiveCartier [Finite ι] :
         ∃! φ : T ⟶ B, φ.IsOver X := by
 \end{lstlisting}
 
+\begin{proof}
+Apply Theorem \ref{thm:main} to $[\cI]$ and use Proposition
+\ref{prop:cartier-mathlib}.
+\end{proof}
+
 For a finite family of closed immersions $Z_i \to X$, the same holds with
-$\cI_i = \ker(Z_i \to X)$.
+$\cI_i = \ker(Z_i \to X)$
+(\texttt{exists\_blowup\_isEffectiveCartier\_of\_isClosedImmersion}).
 
 \section{Dilatation}\label{sec:dilatation}
 
@@ -1892,7 +1940,7 @@ Springer Proc. Math. Stat., to appear.
 \bibitem{blowups-code}
 A.~Mayeux,
 \emph{Projective blowups: a formal and multicentered proof}, Lean~4 code,
-version \texttt{v2.0}, \url{https://github.com/rndmx/MULTI-PROJ-BLOW}.
+version \texttt{v2.1}, \url{https://github.com/rndmx/MULTI-PROJ-BLOW}.
 
 \bibitem{stacks-project}
 The Stacks project authors,
