@@ -2,6 +2,7 @@ import Project.Blowups.Affine
 import Project.Blowups.Bl
 import Project.Blowups.BlowupExists
 import Project.Blowups.Cars
+import Project.Blowups.IdealSheaf
 import Project.Blowups.PreClosAndClos
 import Project.Blowups.UniqueBlowup
 import Project.Dilatation.Family

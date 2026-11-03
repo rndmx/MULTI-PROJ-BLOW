@@ -3352,14 +3352,12 @@ lemma BlGlob_IsCars (Z : PreClos X)
          subscheme_iso_over := fun i => by simp [Scheme.Hom.isOver_iff] }⟩
 
 lemma PreProjBlowup_rel (Z' Z'' : PreClos X) (eq: Quotient.mk' Z' = Quotient.mk' Z'')
-    {T : Scheme} [T.Over X]
     [DecidableEq Z'.indnumb]
     [Fintype Z'.indnumb]
     [Fintype Z''.indnumb]
     [DecidableEq Z''.indnumb]
     [(i : Z'.indnumb →₀ ℤ) → Decidable (i ∈ Set.range ⇑(ρNatToInt Z'.indnumb))]
-    [(i : Z''.indnumb →₀ ℤ) → Decidable (i ∈ Set.range ⇑(ρNatToInt Z''.indnumb))]
-    (cond:  IsPreCars _ <| pullback_PreClos _ _ (T ↘ X) Z') :
+    [(i : Z''.indnumb →₀ ℤ) → Decidable (i ∈ Set.range ⇑(ρNatToInt Z''.indnumb))] :
   ∃! (e : BlGlob Z' ≅ BlGlob Z''), Scheme.Hom.IsOver e.hom X := by
 
   have heq : (Quotient.mk'' Z' : Clos X) = Quotient.mk'' Z'' := eq
