@@ -209,14 +209,14 @@ managed by the notions of presented centre and centre of Section
 Multi-graded $\Proj$ and blowups of this kind are used elsewhere. Tang
 \cite{tang} constructs Gysin maps for regular immersions in a
 $\mathbf{P}^1$-unstable, non-$\mathbf{A}^1$-invariant theory of motivic spaces
-and spectra, using pushout-blowups, and observes there that composing several
-Gysin maps should require the $\Proj$ construction for $\Nat^n$-graded rings,
-that is an animated version of the theory of \cite{brenner-schroer} and
-\cite{mayeux-riche}.
+and spectra, using pushout-blowups. About further functoriality of these blowups, he writes
+\cite[Remark~A.32]{tang}: ``It will probably involve the $\Proj$ construction of
+$\Nat^n$-graded rings, i.e.\ an animated version of the theory in''
+\cite{brenner-schroer} and \cite{mayeux-riche}.
 
 The formalisation is built on mathlib \cite{mathlib}, which supplies schemes,
 $\Spec$, fibre products, open and closed immersions, gluing data, homogeneous
-localisation and the theory of non-zero-divisors. The general scheme theory in mathlib, on which everything here depends, was developed by Buzzard et al.\ \cite{buzzard-schemes}. Building on this, Zhang \cite{zhang-proj} formalized the monograded Proj construction, providing the first non-affine scheme formalization in a theorem prover.
+localisation and the theory of non-zero-divisors. The general scheme theory in mathlib, on which everything here depends, was developed in \cite{buzzard-schemes}. Building on this, Zhang \cite{zhang-proj} formalized the monograded Proj construction, providing the first non-affine scheme formalization in a theorem prover.
 
 Beyond this general infrastructure, mathlib does not yet contain blowups,
 dilatations, multigraded $\Proj$, or effective Cartier ideal sheaves. It
@@ -276,8 +276,8 @@ is not available in mathlib, as recorded in Section \ref{sec:relation}. The
 present proof operates at the ring level, avoiding the need for global scheme-theoretic infrastructure, and constructs the global blowup
 via covers, charts, gluing data, and uniqueness arguments. Following
 \cite{mayeux-riche} literally would have meant developing both the global
-dilatations of schemes and all of their supporting theory. The approach taken
-here achieves efficiency by building only what is essential for the proof. The multigraded
+dilatations of schemes and all of their supporting theory, which is less
+elementary than the road taken here via dilatations of rings. The multigraded
 $\Proj$ construction of Brenner and Schröer \cite{brenner-schroer} is used to
 define the blowup by gluing dilatation charts. The universal property of the
 multicentered dilatation of a ring is then used to prove the universal property
@@ -309,7 +309,9 @@ Sections \ref{sec:dilatation} to \ref{sec:proof} carry this out.
 publicly available at \url{https://github.com/rndmx/MULTI-PROJ-BLOW} \cite{blowups-code}, version
 \texttt{v2.1}. It builds with Lean \texttt{v4.22.0-rc3} and mathlib at commit
 \texttt{7b332d3}; running \texttt{lake exe cache get} followed by
-\texttt{lake build} checks all proofs. Every code excerpt in this paper is
+\texttt{lake build} checks all proofs. The formalization contains no \texttt{sorry}; the main
+theorems depend only on the axioms \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound}. Every code excerpt in this paper is
 preceded by its file and line numbers in that version.
 The repository includes portions of the code of \cite{mayeux-zhang}, updated to
 this version of mathlib, so that it builds on its own.
@@ -681,8 +683,7 @@ $\cI_i = \ker(Z_i \to X)$
 \section{Dilatation}\label{sec:dilatation}
 
 This section contains the construction that drives everything, following
-\cite{mayeux-dilatations} and \cite{mayeux-zhang}. Some of the results on
-dilatations here are new to this project.
+\cite{mayeux-dilatations} and \cite{mayeux-zhang}.
 
 \subsection{Multicenters}
 
@@ -1190,11 +1191,15 @@ $\Lambda_F \sqcup \Lambda_G$, carrying the pairs of $F$ and of $G$, with
 section that of $F$ (\texttt{union\_Mu}), and let
 $\lambda_F : A[F] \to A[F \sqcup G]$ and $\lambda_G : A[G] \to A[F \sqcup G]$
 be the structure maps (\texttt{dilationToUnion\_left},
-\texttt{dilationToUnion\_right}). Since each $c_i$ is a non-zero-divisor with
-$L_i B = (c_i)$, there is an $A$-algebra map $g'' : A[F \sqcup G] \to B$ with
-$g = g'' \circ \lambda_F$ and $g' = g'' \circ \lambda_G$ (Lemmas
-\ref{lem:dil-gen}, \ref{lem:dil-nzd} and Theorem \ref{thm:dil-univ};
-\texttt{lemm\_dila\_double\_union}).
+\texttt{dilationToUnion\_right}). For $j \in \Lambda_F$, applying $g$ to Lemma \ref{lem:dil-gen} gives
+$(a_j) = \cL_j B = L_{\Psi(j)} B = (c_{\Psi(j)})$ in $B$. Hence $a_j$ and the
+non-zero-divisor $c_{\Psi(j)}$ generate the same principal ideal, so $a_j$ is a
+non-zero-divisor of $B$. The same holds for $j \in \Lambda_G$, using $g'$. By
+Theorem \ref{thm:dil-univ} there is an $A$-algebra map
+$g'' : A[F \sqcup G] \to B$. The maps $g$ and $g'' \circ \lambda_F$ are
+$A$-algebra maps $A[F] \to B$, so they are equal by the uniqueness in Theorem
+\ref{thm:dil-univ}; likewise $g' = g'' \circ \lambda_G$
+(\texttt{lemm\_dila\_double\_union}).
 
 One has $S_F, S_G \le S_{F \sqcup G}$, and under the isomorphisms of
 Proposition \ref{prop:dil-is-potion} the localisation maps
@@ -1866,10 +1871,10 @@ Files in \texttt{Project/Blowups/} except \texttt{Multicenter.lean}, which is in
 \texttt{Project/Dilatation/}.
 
 \bmhead{Acknowledgements}
-We thank the referee for a careful reading of the manuscript and for valuable
-comments that improved the exposition of the formalized results. We are also
-grateful to the referee for pointing out several issues in the mathematical
-presentation.
+We are very grateful to the referee for a careful reading of the manuscript and
+for many valuable comments. We especially thank the referee for pointing out
+some inconsistencies in the mathematical presentation of an earlier version, and for suggestions
+that improved the formalization and its exposition.
 
 \begin{thebibliography}{9}
 \bibitem{brenner-schroer}
@@ -1879,7 +1884,7 @@ schemes},
 Pacific J. Math. \textbf{208} (2003), no.~2, 209--230.
 
 \bibitem{buzzard-schemes}
-K.~Buzzard et al.,
+K.~Buzzard, C.~Hughes, K.~Lau, A.~Livingston, R.~Fern\'andez Mir and S.~Morrison,
 \emph{Schemes in Lean},
 Exp. Math. \textbf{31} (2022), no.~2, 355--363.
 
@@ -1935,7 +1940,9 @@ J.\ Automat.\ Reason.\ \textbf{70} (2026), no.~2, Paper No.~17.
 A.~Mayeux and J.~Zhang,
 \emph{The mechanization of science illustrated by the Lean formalization of
 the multi-graded Proj construction},
-Springer Proc. Math. Stat., to appear.
+in: V.~Dobrev (ed.), \emph{Lie Theory and Its Applications in Physics}
+(Varna, Bulgaria, June 2025), Springer Proc. Math. Stat. \textbf{572},
+Springer, Singapore, 2027, to appear.
 
 \bibitem{blowups-code}
 A.~Mayeux,
