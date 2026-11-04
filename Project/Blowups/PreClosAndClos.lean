@@ -52,10 +52,10 @@ end over_instances
 variable (X) in
 structure PreClos where
   (indnumb : Type)
-  (subscheme: indnumb → Scheme)
+  (subscheme : indnumb → Scheme)
   [over : ∀ (i : indnumb), Scheme.Over (subscheme i) X]
   cov : Scheme.AffineCover.{u+1} (P := @IsOpenImmersion) X
-  ideal: ∀ (_ : indnumb) (γ : cov.J), Ideal (cov.obj γ)
+  ideal : ∀ (_ : indnumb) (γ : cov.J), Ideal (cov.obj γ)
   condiso : ∀ (i : indnumb) (γ : cov.J),
     Spec (CommRingCat.of (cov.obj γ ⧸ ideal i γ)) ≅
     pullback (f := subscheme i ↘ X) (g := cov.map γ)
@@ -71,7 +71,7 @@ lemma PreClos.index_eq_triangle {X : Scheme} (Z : PreClos X) (i j : Z.indnumb) (
   simp
 
 structure relStructure (Z Z' : PreClos X) where
-  indnumb_equiv :  Z.indnumb ≃ Z'.indnumb
+  indnumb_equiv : Z.indnumb ≃ Z'.indnumb
   subscheme_iso : ∀ i, Z.subscheme i ≅ Z'.subscheme (indnumb_equiv i)
   subscheme_iso_over : ∀ i, Scheme.Hom.IsOver (subscheme_iso i).hom X
 
@@ -348,12 +348,12 @@ def pullback_PreClos_condover {X' : Scheme} {f : X' ⟶  X} {Z: PreClos X}
   simp only [one_smul, Ideal.Quotient.mk_eq_mk]
   rfl
 
-def pullback_PreClos (X' : Scheme) (f: X' ⟶  X) (Z: PreClos X)  : PreClos X'  where
+def pullback_PreClos (X' : Scheme) (f : X' ⟶ X) (Z : PreClos X) : PreClos X' where
   indnumb := Z.indnumb
   subscheme i := pullback (Z.subscheme i ↘ X) f
   over i := ⟨pullback.snd _ _⟩
   cov := pull_cov X Z X' f
-  ideal i γβ :=  pull_ideal X Z X' f γβ i
+  ideal i γβ := pull_ideal X Z X' f γβ i
   condiso i γβ := pullback_PreClos_condiso _ γβ i
   condover := by
     intro i γβ
@@ -386,7 +386,7 @@ def pullback_lem (Z Z': PreClos X) (T : Scheme) (f : T ⟶ X) (e : relStructure.
     simp only [limit.lift_π, PullbackCone.mk_pt, PullbackCone.mk_π_app, Category.comp_id]
 
 variable {X}
-def pullback_Clos {X': Scheme} (f: X' ⟶  X): Clos X → Clos X' :=
+def pullback_Clos {X' : Scheme} (f : X' ⟶ X) : Clos X → Clos X' :=
   Quotient.map (pullback_PreClos X X' f) <| fun Z Z' e => Nonempty.map (pullback_lem X Z Z' X' f) e
 
 lemma pullback_PrePri (X' : Scheme) (f: X' ⟶  X) (Z: PreClos X) (hZ : IsPrePri _ Z)  :

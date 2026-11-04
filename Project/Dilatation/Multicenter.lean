@@ -383,9 +383,9 @@ lemma nonzerodiv_image (v : F.index →₀ ℕ) : algebraMap A A[F] (F.elem^v) �
     use v + α
     simp [familyPow_add, ← mul_assoc, hα]
 
-lemma image_elem_LargeIdeal_equal  (v : F.index →₀ ℕ) :
+lemma image_elem_LargeIdeal_equal (v : F.index →₀ ℕ) :
  Ideal.span ({algebraMap A A[F] (F.elem^v)}) =
-    Ideal.map (algebraMap A A[F]) (F.LargeIdeal^v):= by
+    Ideal.map (algebraMap A A[F]) (F.LargeIdeal^v) := by
     refine le_antisymm ?_  ?_
     · rw [Ideal.span_le]
       simp only [Set.singleton_subset_iff, SetLike.mem_coe]
@@ -619,10 +619,10 @@ lemma dsc_spec [Algebra A B] (v : F.index →₀ ℕ) (m : F.LargeIdeal^v)
     (algebraMap A B) (F.elem^v) * desc F non_zero_divisor gen (m/.v)  = (algebraMap A B) m := by
     apply (lemma_exists_in_image F non_zero_divisor gen v m).choose_spec.1
 
-lemma  lemma_exists_unique_morphism [Algebra A B]
+lemma lemma_exists_unique_morphism [Algebra A B]
     (non_zero_divisor : ∀ i : F.index, (algebraMap A B) (F.elem i) ∈ nonZeroDivisors B)
     (gen : ∀ i, Ideal.span {(algebraMap A B) (F.elem i)} = Ideal.map (algebraMap A B) (F.LargeIdeal i))
-    (χ':A[F]→ₐ[A] B)  : χ' = desc F non_zero_divisor gen := by
+    (χ' : A[F] →ₐ[A] B) : χ' = desc F non_zero_divisor gen := by
       ext x
       induction x using induction_on with |h x =>
       have eq1 : ((algebraMap A B) (F.elem^x.pow)) *(χ' ⟨x.num, x.num_mem⟩/.x.pow) =
@@ -769,7 +769,7 @@ lemma reciprocal_for_univ [Algebra A B] (F : Multicenter A)
 open Multicenter Dilatation
 
 @[simps]
-def image_mult [Algebra A B] :  Multicenter B :=
+def image_mult [Algebra A B] : Multicenter B :=
   { index := _
     ideal i := Ideal.map (algebraMap A B) (F.ideal i)
     elem i := algebraMap A B (F.elem i)}
@@ -781,7 +781,7 @@ lemma image_mult_LargeIdeal [Algebra A B] (i : F.index):
   rw[Ideal.map_span]
   simp
 
-def functo_dila_alg [Algebra A B]: A[F] →ₐ[A]  B[image_mult (B := B) F]  :=
+def functo_dila_alg [Algebra A B] : A[F] →ₐ[A] B[image_mult (B := B) F] :=
   desc F (by
     classical
     intro i

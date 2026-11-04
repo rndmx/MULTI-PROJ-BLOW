@@ -39,11 +39,11 @@ structure conceptual_blowup (Z : Clos X) where
   scheme : Scheme
   over : Scheme.Over scheme X
   in_cars : pullback_Clos (scheme ↘ X) Z ∈ CarsAsSubsetOfClos scheme
-  φ (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z  ∈ (CarsAsSubsetOfClos T)) :
+  φ (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z ∈ (CarsAsSubsetOfClos T)) :
     T ⟶ scheme
-  φ_over (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z  ∈ (CarsAsSubsetOfClos T)) :
+  φ_over (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z ∈ (CarsAsSubsetOfClos T)) :
     Scheme.Hom.IsOver (φ T in_preCars) X
-  φ_uniq (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z  ∈ (CarsAsSubsetOfClos T)) :
+  φ_uniq (T : Scheme) [T.Over X] (in_preCars : pullback_Clos (T ↘ X) Z ∈ (CarsAsSubsetOfClos T)) :
     ∀ φ' : T ⟶ scheme, Scheme.Hom.IsOver φ' X → φ' = φ T in_preCars
 
 def singletonCovering (A: CommRingCat) :
@@ -252,7 +252,7 @@ lemma PreClos_ideal_eq_of_rel (A : CommRingCat.{u+1}) (L : ι → Ideal A)
 open GoodPotionIngredient HomogeneousSubmonoid
 set_option maxHeartbeats 3200000 in
 theorem ProjBlowup_UnivProp_unicity_affine
-  (A: CommRingCat.{u+1}) (L : ι → Ideal A) [fin : Fintype ι]
+  (A : CommRingCat.{u+1}) (L : ι → Ideal A) [fin : Fintype ι]
   {T : Scheme} [T.Over (Spec A)]
   (cond : IsCars _ (pullback_Clos (T ↘ Spec A) (loc_to_Clos A L)))
 

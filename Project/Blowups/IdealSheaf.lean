@@ -123,10 +123,9 @@ theorem exists_blowup [Finite ι] :
   set Z : Clos X := toClos I
   have hR : Nonempty (relStructure Z.out (toPreClos I)) := Quotient.exact (Quotient.out_eq Z)
   let e : Z.out.indnumb ≃ ι := hR.some.indnumb_equiv
-  haveI : Fintype Z.out.indnumb := @Fintype.ofEquiv _ _ (Fintype.ofFinite ι) e.symm
+  haveI : Finite Z.out.indnumb := Finite.of_equiv ι e.symm
   refine ⟨GlobalBlowup Z, inferInstance, ?_, fun T _ hT ↦ GlobalBlowup_UnivProp Z hT⟩
-  have h := BlGlob_IsCars Z.out
-  rwa [Quotient.out_eq'] at h
+  exact GlobalBlowup_IsCars Z
 
 /-- **Blowups along closed subschemes.** The same statement for a finite family of closed
 immersions `Z i ⟶ X`, through their kernels (see `AlgebraicGeometry.overEquivIdealSheafData`). -/

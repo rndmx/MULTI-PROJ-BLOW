@@ -987,9 +987,9 @@ lemma ProjBlowup_UnivProp_existence_affine_preclo
   exact ((over x).comp_over).trans ((emb_over_A x).comp_over).symm
 
 lemma ProjBlowup_UnivProp_existence_affine
-    (A: CommRingCat) (L : ι → Ideal A) [fin : Fintype ι]
+    (A : CommRingCat) (L : ι → Ideal A) [fin : Fintype ι]
     {T : Scheme} [T.Over (Spec A)]
-    (cond : pullback_Clos (T ↘ Spec A) (loc_to_Clos A L) ∈  CarsAsSubsetOfClos T) :
+    (cond : pullback_Clos (T ↘ Spec A) (loc_to_Clos A L) ∈ CarsAsSubsetOfClos T) :
     ∃ φ : T ⟶ BlMu L, Scheme.Hom.IsOver φ (Spec A) := by
 
   exact ProjBlowup_UnivProp_existence_affine_preclo A L cond
@@ -1012,10 +1012,10 @@ lemma ProjBlowup_UnivProp_existence_affine_restrict
   · exact (ProjBlowup_UnivProp_existence_affine A L cond').choose_spec
 
 lemma ProjBlowup_UnivProp_affine
-  (A: CommRingCat) (L : ι → Ideal A) [fin : Fintype ι]
+  (A : CommRingCat) (L : ι → Ideal A) [fin : Fintype ι]
   {T : Scheme} [T.Over (Spec A)]
-  (cond : pullback_Clos (T ↘ Spec A) (loc_to_Clos A L) ∈  CarsAsSubsetOfClos T) :
-    ∃! φ :  T ⟶ BlMu L,  Scheme.Hom.IsOver φ (Spec A) := by
+  (cond : pullback_Clos (T ↘ Spec A) (loc_to_Clos A L) ∈ CarsAsSubsetOfClos T) :
+    ∃! φ : T ⟶ BlMu L, Scheme.Hom.IsOver φ (Spec A) := by
   obtain ⟨φ, hφ⟩ := ProjBlowup_UnivProp_existence_affine A L cond
   refine ⟨φ, hφ, ?_⟩
   intro φ' hφ'
@@ -1039,7 +1039,7 @@ def ProjBlowup_φ_uniq (A: CommRingCat) (L : ι → Ideal A) [fin : Fintype ι]
     ∀ φ' : T ⟶ BlMu L, Scheme.Hom.IsOver φ' (Spec A) → φ' = ProjBlowup_φ A L cond :=
   Classical.choose_spec (ProjBlowup_UnivProp_affine A L cond) |>.2
 
-def  ProjBlowup_is_conceptual_blowups_affine (A: CommRingCat) (L : ι → Ideal A) [fin : Fintype ι] :
+def ProjBlowup_is_conceptual_blowups_affine (A : CommRingCat) (L : ι → Ideal A) [fin : Fintype ι] :
     conceptual_blowup (loc_to_Clos A L) where
   scheme := BlMu L
   over := inferInstance
@@ -1335,7 +1335,7 @@ lemma loc_to_Clos_baseChange (A R : CommRingCat.{u+1}) [Algebra A R] (L : ι →
 
 set_option maxHeartbeats 3200000 in
 lemma base_change_Bl_open [Fintype ι] (A B : CommRingCat) [Algebra A B]
-    [IsOpenImmersion (Spec B ↘ Spec A)] (L: ι → Ideal A) :
+    [IsOpenImmersion (Spec B ↘ Spec A)] (L : ι → Ideal A) :
     ∃! (e : pullback (BlMu L ↘ Spec A) (Spec B ↘ Spec A) ≅
 
     BlMu (L := fun i : ι => Ideal.map (algebraMap A B) (L i))), Scheme.Hom.IsOver e.hom (Spec B) := by
@@ -1390,10 +1390,10 @@ lemma lemma_open_eq (U : Scheme) (i : U ⟶ X) [IsOpenImmersion i]
   rw [← cancel_mono i, Category.id_comp]
   exact hi.symm
 
-def ideal_loc (X: Scheme) (Z: PreClos X) (γ : Z.cov.J) : Z.indnumb → Ideal (Z.cov.obj γ) :=
+def ideal_loc (X : Scheme) (Z : PreClos X) (γ : Z.cov.J) : Z.indnumb → Ideal (Z.cov.obj γ) :=
   fun (i : Z.indnumb) => Z.ideal i γ
 
-def Proj_loc  (X: Scheme) (Z: PreClos X) (γ : Z.cov.J)
+def Proj_loc (X : Scheme) (Z : PreClos X) (γ : Z.cov.J)
     [DecidableEq Z.indnumb]
     [Fintype Z.indnumb]
     [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] : Scheme :=
@@ -1414,7 +1414,7 @@ instance (X : Scheme) (Z: PreClos X) (γ : Z.cov.J)
   hom := (Proj_loc X Z γ) ↘ (Spec (Z.cov.obj γ)) ≫
     Z.cov.map γ
 
-def open_pair (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J) : Scheme :=
+def open_pair (X : Scheme) (Z : PreClos X) (γ δ : Z.cov.J) : Scheme :=
   pullback (Z.cov.map γ) (Z.cov.map δ)
 
 def open_pair_map (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J) : open_pair X Z  γ δ  ⟶ X :=
@@ -1434,10 +1434,10 @@ lemma open_pair_map_is_open (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J) :
     haveI : IsOpenImmersion (Z.cov.map δ) := Z.cov.map_prop δ
     infer_instance
 
-def Proj_loc_pair (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
+def Proj_loc_pair (X : Scheme) (Z : PreClos X) (γ δ : Z.cov.J)
   [DecidableEq Z.indnumb]
     [Fintype Z.indnumb]
-  [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))]  : Scheme :=
+  [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] : Scheme :=
     pullback (pullback.fst (Z.cov.map γ) (Z.cov.map δ))
       (Proj_loc X Z γ ↘ Spec (Z.cov.obj γ))
 
@@ -1611,11 +1611,11 @@ lemma existsUnique_iso_transport_target {F G G' S : Scheme} [F.Over S] [G.Over S
     have h4 : e' = (e'.trans τ.symm).trans τ := by ext1; simp
     rw [h4, h2]
 
-def Proj_loc_pair_mor (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
+def Proj_loc_pair_mor (X : Scheme) (Z : PreClos X) (γ δ : Z.cov.J)
     [DecidableEq Z.indnumb]
     [Fintype Z.indnumb]
-    [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))]:
-  Proj_loc_pair X Z γ δ ⟶ open_pair X Z γ δ  :=
+    [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] :
+  Proj_loc_pair X Z γ δ ⟶ open_pair X Z γ δ :=
     pullback.fst (pullback.fst (Z.cov.map γ) (Z.cov.map δ))
       (Proj_loc X Z γ ↘ Spec (Z.cov.obj γ))
 
@@ -1960,11 +1960,11 @@ lemma Proj_loc_pair_open_φ_restrict (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J
     exact (transportIso_hom_fst (Proj_loc_pair_mor X Z γ δ) i j).symm
   exact hfinal
 
-def Proj_loc_pair_lemm (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
+def Proj_loc_pair_lemm (X : Scheme) (Z : PreClos X) (γ δ : Z.cov.J)
   [DecidableEq Z.indnumb]
   [Fintype Z.indnumb]
-  [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))]:
-  ∃! (f : (Proj_loc_pair X Z γ δ) ⟶  (Proj_loc_pair X Z δ γ)),
+  [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] :
+  ∃! (f : (Proj_loc_pair X Z γ δ) ⟶ (Proj_loc_pair X Z δ γ)),
 
   (∃ (pf : Scheme.Hom.IsOver f (open_pair X Z γ δ)),
     ∀ (C : CommRingCat) (i : Spec C ⟶ open_pair X Z γ δ) [IsOpenImmersion i],
@@ -2256,11 +2256,11 @@ def Proj_loc_pair_lemm (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
     simp only [Category.assoc, pullbackSymmetry_hom_comp_fst]
     rfl
 
-def Proj_loc_pair_swap (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
+def Proj_loc_pair_swap (X : Scheme) (Z : PreClos X) (γ δ : Z.cov.J)
   [DecidableEq Z.indnumb]
   [Fintype Z.indnumb]
   [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] :
-    (Proj_loc_pair X Z γ δ) ⟶  (Proj_loc_pair X Z δ γ) :=
+    (Proj_loc_pair X Z γ δ) ⟶ (Proj_loc_pair X Z δ γ) :=
   Classical.choose (Proj_loc_pair_lemm X Z γ δ)
 
 instance Proj_loc_pair_swap_isOver (X: Scheme) (Z: PreClos X) (γ δ : Z.cov.J)
@@ -2583,7 +2583,7 @@ def PreBlGlob  (Z: PreClos X) [DecidableEq Z.indnumb]
     exact key
   f_open := inferInstance
 
-abbrev BlGlob (Z: PreClos X) [DecidableEq Z.indnumb]
+abbrev BlGlob (Z : PreClos X) [DecidableEq Z.indnumb]
   [Fintype Z.indnumb]
   [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))] : Scheme :=
   Scheme.GlueData.glued (PreBlGlob Z)
@@ -3007,12 +3007,12 @@ lemma PreProjBlowup_UnivProp_existence
   PreProjBlowup_UnivProp_existence_Cars Z ⟨_, cond, rfl⟩
 
 lemma PreProjBlowup_UnivProp
-    (Z: PreClos X)
+    (Z : PreClos X)
     [DecidableEq Z.indnumb]
     [Fintype Z.indnumb]
     [(i : Z.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.indnumb))]
     {T : Scheme} [T.Over X]
-    (cond:  IsPreCars _ <| pullback_PreClos _ _ (T ↘ X) Z) :
+    (cond : IsPreCars _ <| pullback_PreClos _ _ (T ↘ X) Z) :
     ∃! φ : T ⟶ BlGlob Z, Scheme.Hom.IsOver φ X := by
   obtain ⟨φ, hφ⟩ := PreProjBlowup_UnivProp_existence Z cond
   refine ⟨φ, hφ, ?_⟩
@@ -3351,7 +3351,7 @@ lemma BlGlob_IsCars (Z : PreClos X)
          subscheme_iso := fun i => Iso.refl _
          subscheme_iso_over := fun i => by simp [Scheme.Hom.isOver_iff] }⟩
 
-lemma PreProjBlowup_rel (Z' Z'' : PreClos X) (eq: Quotient.mk' Z' = Quotient.mk' Z'')
+lemma PreProjBlowup_rel (Z' Z'' : PreClos X) (eq : Quotient.mk' Z' = Quotient.mk' Z'')
     [DecidableEq Z'.indnumb]
     [Fintype Z'.indnumb]
     [Fintype Z''.indnumb]
@@ -3379,24 +3379,37 @@ lemma PreProjBlowup_rel (Z' Z'' : PreClos X) (eq: Quotient.mk' Z' = Quotient.mk'
     ext1
     exact PreProjBlowup_UnivProp_unicity_Cars Z'' hc' _ _ he' hφ
 
-noncomputable def GlobalBlowup (Z : Clos X) [DecidableEq Z.out.indnumb] [Fintype Z.out.indnumb]
-    [(i : Z.out.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.out.indnumb))] : Scheme :=
+noncomputable def GlobalBlowup (Z : Clos X) [Finite Z.out.indnumb] : Scheme :=
+  letI := Fintype.ofFinite Z.out.indnumb
+  letI := Classical.decEq Z.out.indnumb
+  letI := Classical.decPred (· ∈ Set.range (ρNatToInt Z.out.indnumb))
   BlGlob Z.out
 
-noncomputable instance GlobalBlowup.over (Z : Clos X) [DecidableEq Z.out.indnumb]
-    [Fintype Z.out.indnumb]
-    [(i : Z.out.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.out.indnumb))] :
+noncomputable instance GlobalBlowup.over (Z : Clos X) [Finite Z.out.indnumb] :
     Scheme.Over (GlobalBlowup Z) X :=
+  letI := Fintype.ofFinite Z.out.indnumb
+  letI := Classical.decEq Z.out.indnumb
+  letI := Classical.decPred (· ∈ Set.range (ρNatToInt Z.out.indnumb))
   inferInstanceAs (Scheme.Over (BlGlob Z.out) X)
 
-theorem GlobalBlowup_UnivProp (Z : Clos X) [DecidableEq Z.out.indnumb] [Fintype Z.out.indnumb]
-    [(i : Z.out.indnumb →₀ ℤ) → Decidable (i ∈ Set.range (ρNatToInt Z.out.indnumb))]
+theorem GlobalBlowup_UnivProp (Z : Clos X) [Finite Z.out.indnumb]
     {T : Scheme} [T.Over X]
     (cond : IsCars _ <| pullback_Clos (T ↘ X) Z) :
     ∃! φ : T ⟶ GlobalBlowup Z, Scheme.Hom.IsOver φ X := by
+  letI := Fintype.ofFinite Z.out.indnumb
+  letI := Classical.decEq Z.out.indnumb
+  letI := Classical.decPred (· ∈ Set.range (ρNatToInt Z.out.indnumb))
   have hcond : IsCars _ <| pullback_Clos (T ↘ X) (Quotient.mk'' Z.out) := by
     rwa [Quotient.out_eq']
   obtain ⟨φ, hφ⟩ := PreProjBlowup_UnivProp_existence_Cars Z.out hcond
   refine ⟨φ, hφ, ?_⟩
   intro φ' hφ'
   exact (PreProjBlowup_UnivProp_unicity_Cars Z.out hcond φ φ' hφ hφ').symm
+
+theorem GlobalBlowup_IsCars (Z : Clos X) [Finite Z.out.indnumb] :
+    IsCars _ (pullback_Clos (GlobalBlowup Z ↘ X) Z) := by
+  letI := Fintype.ofFinite Z.out.indnumb
+  letI := Classical.decEq Z.out.indnumb
+  letI := Classical.decPred (· ∈ Set.range (ρNatToInt Z.out.indnumb))
+  have h := BlGlob_IsCars Z.out
+  rwa [Quotient.out_eq'] at h

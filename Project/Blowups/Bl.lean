@@ -111,8 +111,8 @@ def dilationToUnion_right (P P' : Mu L) : A[P'.multicenter] →ₐ[A] A[(union_M
 
 variable [DecidableEq index] [DecidableEq index']
 
-def clo_mu (P: Mu L)  :
-    HomogeneousSubmonoid (ReesAlgebra.intGrading L):=
+def clo_mu (P : Mu L) :
+    HomogeneousSubmonoid (ReesAlgebra.intGrading L) :=
   HomogeneousSubmonoid.closure
       { ReesAlgebra.single L (Finsupp.single (P.Ψ i) 1) ⟨P.multicenter.elem i, by
         rw [familyPow_single, ← P.cond i]
@@ -268,7 +268,7 @@ lemma mu_potion_algebraMap_eq (P: Mu L) :
   algebraMap A (clo_mu L P).Potion = mu_potion_algebraMap L P := rfl
 
 open Multicenter Multicenter.Dilatation
-def clo_mu_mor (P: Mu L) : A[P.multicenter] →ₐ[A] (clo_mu L P).Potion :=
+def clo_mu_mor (P : Mu L) : A[P.multicenter] →ₐ[A] (clo_mu L P).Potion :=
   Multicenter.desc P.multicenter
     (by
       intro i
@@ -602,7 +602,7 @@ lemma clo_mu_mor_mk (P : Mu L) (x) :
   · aesop
   · aesop
 
-def Mu_mor_iso (P: Mu L) :
+def Mu_mor_iso (P : Mu L) :
     A[P.multicenter] ≃ₐ[A] (clo_mu L P).Potion :=
   AlgEquiv.ofBijective (clo_mu_mor ..) <| ⟨clo_mu_mor_inj L P, clo_mu_mor_surj L P⟩
 
@@ -700,7 +700,7 @@ lemma Mu_mor_iso_commutes_ringHom_right' (P P' : Mu L) :
     RingHom.id_apply]
   exact AlgEquiv.symm_apply_apply _ x
 
-def map_index (P: Mu L) :
+def map_index (P : Mu L) :
     GoodPotionIngredient (ReesAlgebra.intGrading L) where
   toHomogeneousSubmonoid := clo_mu L P
   relevant := clo_mu_rel L P
